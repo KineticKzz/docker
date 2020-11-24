@@ -1,0 +1,29 @@
+version: '3'
+services:
+        wordpress:
+                image: wordpress
+                environment:
+                        WORDPRESS_DB_HOST: dbserver:3306
+                        WORDPRESS_DB_USER: uwp
+                        WORDPRESS_DB_PASSWORD: uwp
+                        WORDPRESS_DB_NAME: bdwp
+                ports:
+                        - 80:80
+                volumes:
+                        - web:/var/www/html
+                depends_on:
+                        - dbserver
+        dbserver:
+                image: mysql:5.7
+                environment:
+                        MYSQL_DATABASE: bdwp
+                        MYSQL_USER: uwp
+                        MYSQL_PASSWORD: uwp
+                        MYSQL_ROOT_PASSWORD: peque
+                ports:
+                        - 3306:3306
+                volumes:
+                        - bd:/var/lib/mysql
+volumes:
+        web:
+        bd:

@@ -1,0 +1,44 @@
+version: '3'
+services:
+        wordpress:
+                image: wordpress
+                restart: always
+                environment:
+                        WORDPRESS_DB_HOST: dbserver:3306
+                        WORDPRESS_DB_USER: uwp
+                        WORDPRESS_DB_PASSWORD: uwp
+                        WORDPRESS_DB_NAME: bdwp
+                ports:
+                        - 80:80
+                volumes:
+                        - web:/var/www/html
+                depends_on:
+                        - dbserver
+        dbserver:
+                image: mariadb
+                restart: always
+                environment:
+                        MYSQL_DATABASE: bdwp
+                        MYSQL_USER: uwp
+                        MYSQL_PASSWORD: uwp
+                        MYSQL_ROOT_PASSWORD: peque
+                ports:
+                        - 3306:3306
+                volumes:
+                        - bd:/var/lib/mysql
+        phpmyadmin:
+                image: phpmyadmin
+                restart: always
+                environment:
+                        PMA_HOST: dbserver:3306
+                        #PMA_USER: uwp
+                        #PMA_PASSWORD: uwp
+                        PMA_ARBITRARY: 1
+                ports:
+                        - 81:80
+                depends_on: 
+                        - dbserver
+
+volumes:
+        web:
+        bd:
